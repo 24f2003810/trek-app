@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        body{
+        margin:0;
+        font-family:Arial, sans-serif;
+    }
+
+    #main{
+        width:95%;
+        margin:20px auto;
+        border:1px solid gray;
+        min-height:600px;
+    }
+
+    #header{
+        border-bottom:1px solid gray;
+        padding:12px 20px;
+    }
+
+    #canvas{
+        display:flex;
+        justify-content:center;
+        margin-top:40px;
+    }
+
+    #form-body{
+        width:360px;
+        border:1px solid lightgray;
+        border-radius:5px;
+        padding:30px;
+    }
+    </style>
+    <title>Login form</title>
+</head>
+<body>
+        
+    <div id="main">
+        <div id="heading">
+            <h2>Trekking Management Application</h2>
+        </div>
+        <div id="canvas">
+            <div id="form-body">
+                <h2>Login</h2>
+                <form action="/register" method="post">
+                    <div class="mb-3">
+                    <label for="Input1" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="Input1" name="name" placeholder="">
+                    </div>
+                    <div class="mb-3">
+                    <label for="Input1" class="form-label">email</label>
+                    <input type="email" class="form-control" id="Input1" name="email" placeholder="">
+                    </div>
+                    <div class="mb-3">
+                    <label for="Input2" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="Input2" name="pwd" placeholder="">
+                    </div>
+                    <div class="mb-3">
+                    <label for="Input3" class="form-label">I am a</label>
+                        <select class="form-select" aria-label="Default select example" name="role">
+                            <option value="staff">Staff</option>
+                            <option value="user">Trekker</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                    <input type="submit" class="btn btn-primary" value="Register"> </input><br>
+                    Are you a Existing user?? <a href="/login">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

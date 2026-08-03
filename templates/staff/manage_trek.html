@@ -1,0 +1,212 @@
+{% extends "staff/base.html" %}
+
+{% block title %}
+Manage Trek
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Title -->
+    <h2 class="fw-bold mb-4">
+        Everest Base Camp
+    </h2>
+
+    <!-- Trek Information -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-4">
+                Trek Information
+            </h5>
+
+            <div class="row">
+
+                <!-- Left Side -->
+
+                <div class="col-md-6">
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-semibold">
+                            Location
+                        </div>
+                        <div class="col-8">
+                            {{this_trek.location}}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-semibold">
+                            Duration
+                        </div>
+                        <div class="col-8">
+                            {{this_trek.duration_days}}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-semibold">
+                            Start Date
+                        </div>
+
+                        <div class="col-8">
+                            {{this_trek.start_date}}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4 fw-semibold">
+                            End Date
+                        </div>
+
+                        <div class="col-8">
+                            {{this_trek.start_date}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Side -->
+
+                <div class="col-md-6">
+
+                    <div class="row mb-3">
+
+                        <div class="col-5 fw-semibold">
+                            Total Slots
+                        </div>
+
+                        <div class="col-7">
+                            {{this_trek.total_slots}}
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-5 fw-semibold">
+                            Available Slots
+                        </div>
+
+                        <div class="col-7">
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                value="{{this_trek.avl_slots}}">
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-5 fw-semibold">
+                            Status
+                        </div>
+
+                        <div class="col-7">
+
+                            <select class="form-select">
+
+                                <option selected>
+                                    Open
+                                </option>
+
+                                <option>
+                                    Closed
+                                </option>
+
+                                <option>
+                                    Completed
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Participants -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-3">
+
+                Participants (12)
+
+            </h5>
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                <tr>
+
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Booking Date</th>
+                    <th>Status</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+                {% for booking in bookings %}
+                <tr>
+
+                    <td>{{booking.users.name}}</td>
+
+                    <td>{{booking.users.email}}</td>
+
+                    <td>{{booking.booking_date}}</td>
+
+                    <td>
+                        <span class="badge bg-success">
+                            {{booking.status}}
+                        </span>
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+    
+                </tbody>
+
+            </table>
+
+            <div class="mt-4">
+                <a href="/mark_started/{{this_trek.id}}">
+                <button class="btn btn-outline-primary px-4 me-3">
+                    Mark as Started
+                </button>
+                </a>
+
+                <a href="/mark_completed/{{this_trek.id}}">
+                <button class="btn btn-outline-success px-4">
+                    Mark as Completed
+                </button>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4 fw-bold">
+        Staff Requests
+    </h2>
+
+    <!-- Status Cards -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h6>Pending</h6>
+                    <h4>{{ pending_staff }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h6>Approved</h6>
+                    <h4>{{ active_staff }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h6>Blacklisted</h6>
+                    <h4>{{ blacklisted_staff }}</h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Table -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-0">
+
+            <table class="table table-hover mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Staff ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for staff in all_staff %}
+
+                <tr>
+
+                    <td>{{ staff.id }}</td>
+
+                    <td>{{ staff.user.name }}</td>
+
+                    <td>{{ staff.user.email }}</td>
+
+                    <td>{{ staff.user.contact }}</td>
+
+                    <td>
+                        <span class="badge bg-warning">
+                            {{ staff.approval_status }}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="/approve_staff/{{ staff.id }}"
+                            class="btn btn-success btn-sm">
+
+                            Approve
+
+                        </a>
+
+                        <a
+                            href="/reject_staff/{{ staff.id }}"
+                            class="btn btn-danger btn-sm">
+
+                            Reject
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+{% endblock %}

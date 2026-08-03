@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Trekking Management{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    {% block css %}{% endblock %}
+
+    <style>
+        body{
+            background:#f8f9fa;
+            overflow-x:hidden;
+        }
+
+        .sidebar{
+            width:240px;
+            min-height:100vh;
+            background:#fff;
+            border-right:1px solid #dee2e6;
+        }
+
+        .sidebar .nav-link{
+            color:#444;
+            padding:12px 18px;
+            border-radius:8px;
+            margin:4px 10px;
+            font-weight:500;
+            transition:.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active{
+            background:#0d6efd;
+            color:white;
+        }
+
+        .sidebar i{
+            margin-right:10px;
+        }
+
+        .topbar{
+            background:#fff;
+            border-bottom:1px solid #dee2e6;
+            height:70px;
+        }
+
+        .dashboard-card{
+            border:none;
+            border-radius:12px;
+            box-shadow:0 0 10px rgba(0,0,0,.08);
+            transition:.3s;
+        }
+
+        .dashboard-card:hover{
+            transform:translateY(-4px);
+        }
+
+        .card-icon{
+            font-size:38px;
+            color:#6c757d;
+        }
+
+        .table-container{
+            background:white;
+            border-radius:12px;
+            box-shadow:0 0 10px rgba(0,0,0,.08);
+            padding:20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <h5 class="text-center py-4 border-bottom">
+            Trekking
+        </h5>
+
+        <ul class="nav flex-column mt-3">
+
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == '/admin/dashboard' %}active{% endif %}" href="/admin/dashboard">
+                    <i class="bi bi-house-door"></i>Dashboard
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if '/admin/trek' in request.path %}active{% endif %}" href="/admin/treks">
+                    <i class="bi bi-signpost"></i>Treks
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if '/admin/staff' in request.path %}active{% endif %}" href="/admin/staff">
+                    <i class="bi bi-person-badge"></i>Staff
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if '/admin/users' in request.path %}active{% endif %}" href="/admin/users">
+                    <i class="bi bi-people"></i>Users
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if '/admin/booking' in request.path %}active{% endif %}" href="/admin/all/booking">
+                    <i class="bi bi-calendar-check"></i>Bookings
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/search">
+                    <i class="bi bi-search"></i>Search
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/reports">
+                    <i class="bi bi-bar-chart"></i>Reports
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/settings">
+                    <i class="bi bi-gear"></i>Settings
+                </a>
+            </li>
+
+            <li class="nav-item mt-3">
+                <a class="nav-link text-danger" href="/logout">
+                    <i class="bi bi-box-arrow-right"></i>Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1">
+
+        <!-- Navbar -->
+        <nav class="navbar topbar px-4">
+
+            <h4 class="mb-0">
+                Trekking Management Application
+            </h4>
+
+            <div class="dropdown">
+
+                <button class="btn btn-light dropdown-toggle"
+                        data-bs-toggle="dropdown">
+
+                    <i class="bi bi-person-circle"></i>
+                    {{ this_admin.name }}
+
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="/logout">
+                            Logout
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
+
+        <!-- Flash Messages -->
+        <div class="container-fluid mt-3">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{category}} alert-dismissible fade show">
+                            {{message}}
+                            <button class="btn-close"
+                                    data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+        </div>
+
+        <!-- Page Content -->
+        <div class="container-fluid p-4">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+{% block js %}{% endblock %}
+
+</body>
+</html>
