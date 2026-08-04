@@ -1,0 +1,78 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+All Users
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Heading -->
+    <h2 class="fw-bold mb-4">
+        All Users
+    </h2>
+
+    <!-- Booking Table -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-0">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th class="text-center">Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    {% for u in all_users %}
+                    <tr>
+
+                        <td>{{u.id}}</td>
+                        <td>{{u.name}}</td>
+
+                        <td>{{u.email}}</td>
+
+                        <td>
+                            <span class="badge bg-primary">
+                                {{u.status}}
+                            </span>
+                        </td>
+
+                        <td class="text-center">
+                            <a href="/revoke/{{u.id}}">
+                            <button class="btn btn-outline-primary btn-sm px-4">
+                                Revoke
+                            </button>
+                            </a>
+                            <a href="/activate/{{u.id}}">
+                            <button class="btn btn-outline-primary btn-sm px-4">
+                                Activate
+                            </button>
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

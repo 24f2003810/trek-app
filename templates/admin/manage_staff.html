@@ -85,7 +85,7 @@
                     </td>
 
                     <td>
-
+                        {% if staff.approval_status== "blacklisted" or staff.approval_status== "pending" %} 
                         <a
                             href="/approve_staff/{{ staff.id }}"
                             class="btn btn-success btn-sm">
@@ -93,15 +93,17 @@
                             Approve
 
                         </a>
+                        {% endif %}
 
+                        {% if staff.approval_status == "approved" %}
                         <a
                             href="/reject_staff/{{ staff.id }}"
                             class="btn btn-danger btn-sm">
 
-                            Reject
+                            Blacklist
 
                         </a>
-
+                        {% endif %}
                     </td>
 
                 </tr>

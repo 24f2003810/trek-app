@@ -18,12 +18,6 @@ def admin():
     return render_template("admin/dashboard.html",this_admin=this_admin,total_user=total_user,total_bookings=total_bookings,total_staff=total_staff,total_treks=total_treks,all_bookings=all_bookings,recent_booking=recent_booking)
 
 
-@app.route("/admin/all/bookings")
-def all_bookings():
-    this_admin=User.query.filter_by(id=session["admin_id"]).first()
-    all_bookings=Booking.query.all()
-    return render_template("admin/all_bookings.html",this_admin=this_admin,all_bookings=all_bookings)
-
 
 
 @app.route("/admin/treks")
@@ -39,6 +33,7 @@ def add_trek():
     if(request.method=="POST"):
         name=request.form.get("name")
         location=request.form.get("location")
+        price=request.form.get("price")
         difficulty=request.form.get("difficulty")
         duration_days=request.form.get("duration")
         total_slots=request.form.get("total_slots")
@@ -47,7 +42,7 @@ def add_trek():
         staff=request.form.get("staff")
         status=request.form.get("status")
         desc=request.form.get("desc")
-        trek=Trek(name=name,location=location,difficulty=difficulty,duration_days=duration_days,total_slots=total_slots,avl_slots=total_slots,start_date=start_date,end_date=end_date,assigned_staff_id=staff,created_by=this_admin.id,desc=desc)
+        trek=Trek(name=name,location=location,price=price,difficulty=difficulty,duration_days=duration_days,total_slots=total_slots,avl_slots=total_slots,start_date=start_date,end_date=end_date,assigned_staff_id=staff,created_by=this_admin.id,desc=desc)
         db.session.add(trek)
         db.session.commit()
     return render_template("admin/add_trek.html",this_admin=this_admin,ex_staff=ex_staff)
@@ -57,9 +52,11 @@ def add_trek():
 def edit_trek(trek_id):
     this_trek=Trek.query.filter_by(id=trek_id).first()
     this_admin=User.query.filter_by(id=session["admin_id"]).first()
+    ex_staff=Staff.query.join(User,Staff.userid==User.id).all()
     if(request.method=="POST"):
         this_trek.name=request.form.get("name")
         this_trek.location=request.form.get("location")
+        this_trek.price=request.form.get("price")
         this_trek.difficulty=request.form.get("difficulty")
         this_trek.duration_days=request.form.get("duration")
         this_trek.total_slots=request.form.get("total_slots")
@@ -70,7 +67,7 @@ def edit_trek(trek_id):
         this_trek.desc=request.form.get("desc")
         db.session.commit()
         return redirect("/admin/treks")
-    return render_template("admin/edit_trek.html",this_trek=this_trek,this_admin=this_admin)
+    return render_template("admin/edit_trek.html",this_trek=this_trek,this_admin=this_admin,ex_staff=ex_staff)
 
 
 @app.route("/delete/trek/<int:trek_id>")
@@ -111,3 +108,66 @@ def reject_staff(staff_id):
     return redirect("/admin/staff")
 
 
+@app.route("/admin/all/booking")
+def all_booking():
+    this_admin=User.query.filter_by(id=session["admin_id"]).first()
+    all_bookings=Booking.query.all()
+    return render_template("admin/all_booking.html",all_bookings=all_bookings,this_admin=this_admin)
+
+
+
+@app.route("/admin/users")
+def all_users():
+    this_admin=User.query.filter_by(id=session["admin_id"]).first()
+    all_users=User.query.filter_by(role="user").all()
+    return render_template("admin/all_users.html",all_users=all_users,this_admin=this_admin)
+
+@app.route("/revoke/<int:user_id>")
+def revoke_user(user_id):
+    this_admin=User.query.filter_by(id=session["admin_id"]).first()
+    this_user=User.query.filter_by(id=user_id).first()
+    this_user.status="blacklisted"
+    db.session.commit()
+    return redirect("/admin/users")
+
+
+@app.route("/activate/<int:user_id>")
+def acticate_user(user_id):
+    this_admin=User.query.filter_by(id=session["admin_id"]).first()
+    this_user=User.query.filter_by(id=user_id).first()
+    this_user.status="active"
+    db.session.commit()
+    return redirect("/admin/users")
+
+
+@app.route("/admin/search")
+def admin_search():
+
+    search_type = request.args.get("type", "trek")
+    query = request.args.get("q", "").strip()
+    this_admin=User.query.filter_by(id=session["admin_id"]).first()
+    results = []
+
+    if query:
+
+        if search_type == "trek":
+            results = Trek.query.filter(
+                Trek.name.ilike(f"%{query}%")
+            ).all()
+
+        elif search_type == "user":
+            results = User.query.filter(
+                User.name.ilike(f"%{query}%")
+            ).all()
+
+        elif search_type == "staff":
+            results = Staff.query.join(User,Staff.userid==User.id).filter(
+                User.name.ilike(f"%{query}%")
+            ).all()
+
+    return render_template(
+        "admin/search.html",
+        results=results,
+        search_type=search_type,
+        query=query,this_admin=this_admin
+    )
