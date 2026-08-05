@@ -83,7 +83,7 @@
 
             <li class="nav-item">
 
-                <a class="nav-link {% if active_page=='dashboard' %}active{% endif %}"
+                <a class="nav-link {% if '/user/dashboard' in request.path %}active{% endif %}"
                    href="/user/dashboard">
 
                     <i class="bi bi-house-door"></i>
@@ -96,7 +96,7 @@
 
             <li class="nav-item">
 
-                <a class="nav-link {% if active_page=='treks' %}active{% endif %}"
+                <a class="nav-link {% if '/user/treks' in request.path  %}active{% endif %}"
                    href="/user/treks">
 
                     <i class="bi bi-signpost"></i>
@@ -106,10 +106,22 @@
                 </a>
 
             </li>
+            <li class="nav-item">
+
+                <a class="nav-link {% if '/user/search' in request.path  %}active{% endif %}"
+                   href="/user/search">
+
+                    <i class="bi bi-signpost"></i>
+
+                    Search Treks
+
+                </a>
+
+            </li>
 
             <li class="nav-item">
 
-                <a class="nav-link {% if active_page=='bookings' %}active{% endif %}"
+                <a class="nav-link {% if '/user/bookings' in request.path  %}active{% endif %}"
                    href="/user/bookings">
 
                     <i class="bi bi-calendar-check"></i>
@@ -122,7 +134,7 @@
 
             <li class="nav-item">
 
-                <a class="nav-link {% if active_page=='history' %}active{% endif %}"
+                <a class="nav-link {% if '/user/history' in request.path  %}active{% endif %}"
                    href="/user/history">
 
                     <i class="bi bi-clock-history"></i>
@@ -135,7 +147,7 @@
 
             <li class="nav-item">
 
-                <a class="nav-link {% if active_page=='profile' %}active{% endif %}"
+                <a class="nav-link {% if '/user/profile' in request.path  %}active{% endif %}"
                    href="/user/profile">
 
                     <i class="bi bi-person"></i>

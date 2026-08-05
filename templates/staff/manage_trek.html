@@ -10,7 +10,7 @@ Manage Trek
 
     <!-- Page Title -->
     <h2 class="fw-bold mb-4">
-        Everest Base Camp
+        {{this_trek.name}}
     </h2>
 
     <!-- Trek Information -->
@@ -52,7 +52,7 @@ Manage Trek
                         </div>
 
                         <div class="col-8">
-                            {{this_trek.start_date}}
+                            {{this_trek.start_date.date()}}
                         </div>
                     </div>
 
@@ -62,7 +62,7 @@ Manage Trek
                         </div>
 
                         <div class="col-8">
-                            {{this_trek.start_date}}
+                            {{this_trek.end_date.date()}}
                         </div>
                     </div>
 
@@ -145,7 +145,7 @@ Manage Trek
 
             <h5 class="fw-bold mb-3">
 
-                Participants (12)
+                Participants ({{bookings.__len__()}})
 
             </h5>
 
@@ -159,25 +159,36 @@ Manage Trek
                     <th>Email</th>
                     <th>Booking Date</th>
                     <th>Status</th>
+                    <th>Action</th>
 
                 </tr>
 
                 </thead>
 
                 <tbody>
-                {% for booking in bookings %}
+                {% for booking,user,trek in bookings %}
                 <tr>
 
-                    <td>{{booking.users.name}}</td>
+                    <td>{{user.name}}</td>
 
-                    <td>{{booking.users.email}}</td>
+                    <td>{{user.email}}</td>
 
-                    <td>{{booking.booking_date}}</td>
+                    <td>{{booking.booking_date.date()}}</td>
 
                     <td>
                         <span class="badge bg-success">
                             {{booking.status}}
                         </span>
+                    </td>
+                    <td class="text-center">
+
+                        <a href="/cancel/booking/{{ booking.id }}"
+                           class="btn btn-outline-primary btn-sm px-3">
+
+                            Cancel
+
+                        </a>
+
                     </td>
 
                 </tr>

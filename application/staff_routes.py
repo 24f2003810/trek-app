@@ -1,4 +1,4 @@
-from flask import session,render_template,redirect
+from flask import session,render_template,redirect,request
 from flask import current_app as app
 from .models import User,Booking,Trek,Staff
 from .db import db
@@ -25,6 +25,12 @@ def manage_trek(trek_id):
     bookings=db.session.query(Booking,User,Trek).join(User,Booking.user_id==User.id).join(Trek,Booking.trek_id==Trek.id).filter(Trek.assigned_staff_id == staff.id).order_by(Booking.booking_date.desc()).all()
     return render_template("staff/manage_trek.html",this_trek=this_trek,bookings=bookings)
 
+@app.route("/staff/my_treks/")
+def my_treks():
+    staff=Staff.query.filter_by(userid=session["staff_id"]).first()
+    my_treks=Trek.query.filter_by(assigned_staff_id=staff.id).all()
+    return render_template("staff/my_treks.html",my_treks=my_treks)
+
 
 @app.route("/mark_started/<int:trek_id>")
 def mark_started(trek_id):
@@ -45,8 +51,10 @@ def mark_completed(trek_id):
     return redirect("/staff/dashboard")
 
 
-
-# @app.route("/staff/treks")
-# def staff_treks():
-#     staff=Staff.query.filter_by(userid=session["staff_id"])
-    
+@app.route("/cancel/booking/<int:b_id>")
+def cancel_booking(b_id):
+    staff=Staff.query.filter_by(userid=session["staff_id"]).first()
+    this_b=Booking.query.filter_by(id=b_id).first()
+    this_b.status="cancelled"
+    db.session.commit()
+    return redirect("/staff/dashboard")

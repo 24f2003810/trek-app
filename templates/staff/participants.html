@@ -1,0 +1,84 @@
+{% extends "staff/base.html" %}
+
+{% block title %}
+Manage Trek
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+
+    <!-- Participants -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-3">
+
+                Participants ({{bookings.__len__()}})
+
+            </h5>
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                <tr>
+
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Booking Date</th>
+                    <th>Status</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+                {% for booking,user,trek in bookings %}
+                <tr>
+
+                    <td>{{user.name}}</td>
+
+                    <td>{{user.email}}</td>
+
+                    <td>{{booking.booking_date.date()}}</td>
+
+                    <td>
+                        <span class="badge bg-success">
+                            {{booking.status}}
+                        </span>
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+    
+                </tbody>
+
+            </table>
+
+            <div class="mt-4">
+                <a href="/mark_started/{{this_trek.id}}">
+                <button class="btn btn-outline-primary px-4 me-3">
+                    Mark as Started
+                </button>
+                </a>
+
+                <a href="/mark_completed/{{this_trek.id}}">
+                <button class="btn btn-outline-success px-4">
+                    Mark as Completed
+                </button>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

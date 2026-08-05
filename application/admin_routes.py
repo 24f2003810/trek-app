@@ -54,12 +54,16 @@ def edit_trek(trek_id):
     this_admin=User.query.filter_by(id=session["admin_id"]).first()
     ex_staff=Staff.query.join(User,Staff.userid==User.id).all()
     if(request.method=="POST"):
+        old_total=this_trek.total_slots
+        new_total=request.form.get("total_slots")
         this_trek.name=request.form.get("name")
         this_trek.location=request.form.get("location")
         this_trek.price=request.form.get("price")
         this_trek.difficulty=request.form.get("difficulty")
         this_trek.duration_days=request.form.get("duration")
-        this_trek.total_slots=request.form.get("total_slots")
+        this_trek.avl_slots+=int(new_total)-int(old_total)
+        this_trek.total_slots=new_total
+        
         this_trek.start_date=datetime.strptime(request.form.get("start_date"),"%Y-%m-%d")
         this_trek.end_date=datetime.strptime(request.form.get("end_date"),"%Y-%m-%d")
         this_trek.assigned_staff_id=request.form.get("staff")
@@ -171,3 +175,12 @@ def admin_search():
         search_type=search_type,
         query=query,this_admin=this_admin
     )
+
+
+
+@app.route("/history/<int:user_id>")
+def user_history(user_id):
+    user=User.query.filter_by(id=user_id).first()
+    history=Booking.query.filter_by(user_id=user_id).all()
+    this_admin=User.query.filter_by(id=session["admin_id"]).first()
+    return render_template("admin/history.html",user=user,history=history,this_admin=this_admin)

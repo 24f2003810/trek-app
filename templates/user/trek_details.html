@@ -1,0 +1,124 @@
+{% extends "user/base.html" %}
+
+{% block title %}
+Trek Details
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <!-- Back Button -->
+
+            <a href="/user/treks" class="text-decoration-none">
+                <i class="bi bi-arrow-left"></i>
+                Back to Treks
+            </a>
+
+            <h2 class="text-center mb-4 mt-2">
+                {{ trek.name }}
+            </h2>
+
+            <div class="row">
+
+                <!-- Trek Image -->
+
+                <div class="col-md-4">
+
+                    {% if trek.image %}
+                    <img src="{{ url_for('static', filename='uploads/' + trek.image) }}"
+                         class="img-fluid rounded border"
+                         style="height:280px;width:100%;object-fit:cover;">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default_trek.jpg') }}"
+                         class="img-fluid rounded border"
+                         style="height:280px;width:100%;object-fit:cover;">
+                    {% endif %}
+
+                </div>
+
+                <!-- Trek Details -->
+
+                <div class="col-md-5">
+
+                    <table class="table table-borderless">
+
+                        <tr>
+                            <th width="40%">Location</th>
+                            <td>{{ trek.location }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Difficulty</th>
+                            <td>{{ trek.difficulty }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Duration</th>
+                            <td>{{ trek.duration_days }} Days</td>
+                        </tr>
+
+                        <tr>
+                            <th>Start Date</th>
+                            <td>{{ trek.start_date.date() }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>End Date</th>
+                            <td>{{ trek.end_date.date() }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Available Slots</th>
+                            <td>{{ trek.avl_slots }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Price</th>
+                            <td class="fw-bold text-success">
+                                ₹{{ trek.price }}
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- Description -->
+
+            <div class="mt-4">
+
+                <h5>Description</h5>
+
+                <p class="text-muted">
+                    {{ trek.desc }}
+                </p>
+
+            </div>
+
+            <!-- Book Button -->
+
+            <div class="text-end">
+
+                <a href="/book/{{ trek.id }}"
+                   class="btn btn-primary px-5">
+
+                    Book Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

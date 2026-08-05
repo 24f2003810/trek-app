@@ -5,6 +5,7 @@ class User(db.Model):
     id=db.Column(db.Integer(),primary_key=True,autoincrement=True)
     name=db.Column(db.String(),nullable=False)
     email=db.Column(db.String(),nullable=False,unique=True)
+    phone=db.Column(db.String(),nullable=True)
     password=db.Column(db.String(),nullable=False)
     contact=db.Column(db.String(),nullable=True)
     role=db.Column(db.String(),default="user")       # admin | user | staff

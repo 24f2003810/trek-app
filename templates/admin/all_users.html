@@ -29,6 +29,7 @@ All Users
                         <th>Email</th>
                         <th>Status</th>
                         <th class="text-center">Action</th>
+                        <th class="text-center">History</th>
 
                     </tr>
 
@@ -58,6 +59,13 @@ All Users
                             <a href="/activate/{{u.id}}">
                             <button class="btn btn-outline-primary btn-sm px-4">
                                 Activate
+                            </button>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a href="/history/{{u.id}}">
+                            <button class="btn btn-outline-primary btn-sm px-4">
+                                View
                             </button>
                             </a>
                         </td>
