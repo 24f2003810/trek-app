@@ -17,7 +17,7 @@
 
         <div class="card-body">
 
-            <form method="GET" action="/admin/search">
+            <form  action="/admin/search" method="GET">
 
                 <div class="row g-3 align-items-end">
 
@@ -114,6 +114,7 @@
                     <th>Difficulty</th>
                     <th>Price</th>
                     <th>Status</th>
+                    <th>View Details</th>
                 </tr>
 
                 </thead>
@@ -130,6 +131,16 @@
                     <td>{{trek.difficulty}}</td>
                     <td>₹{{trek.price}}</td>
                     <td>{{trek.status}}</td>
+                    <td class="text-center">
+
+                        <a href="/admin/trek_details/{{ trek.id }}"
+                           class="btn btn-outline-primary btn-sm px-3">
+
+                            View Details
+
+                        </a>
+
+                    </td>
 
                 </tr>
 

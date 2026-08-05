@@ -74,7 +74,9 @@
                             <select name="staff" class="form-select">
                                 <option selected>Select Staff</option>
                                 {% for s in ex_staff %}
+                                {% if s.approval_status!="blacklisted" and s.approval_status!="pending" %}
                                 <option value="{{s.id}}">{{s.user.name}}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
                         </div>

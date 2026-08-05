@@ -2,10 +2,12 @@ from flask import current_app as app
 from flask import render_template,redirect,session,flash,request
 from .models import User,Trek,Booking,Staff
 from .db import db
-
+from sqlalchemy import or_
 
 @app.route("/user/dashboard")
 def dashboard():
+    if("user_id" not in session):
+        return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
     all_trek=Trek.query.all()
     my_bookings=Booking.query.filter_by(user_id=session["user_id"]).all()
@@ -14,6 +16,8 @@ def dashboard():
 
 @app.route("/book/<int:trek_id>")
 def book_trek(trek_id):
+    if("user_id" not in session):
+        return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
     exist_booking=Booking.query.filter_by(trek_id=trek_id,user_id=this_user.id).first()
     this_trek=Trek.query.filter_by(id=trek_id).first()
@@ -21,10 +25,13 @@ def book_trek(trek_id):
         flash("Booking Already Exist","success")
         return redirect("/user/dashboard")
     if(this_trek.status!="open"):
-        flash("Trek is Closed","success")
+        flash("Trek is Closed","error")
         return redirect("/user/dashboard")
     if(this_trek.avl_slots==0):
-        flash("Trek is Completely Booked","success")
+        flash("Trek is Completely Booked","error")
+        return redirect("/user/dashboard")
+    if(this_user.status=="blacklisted"):
+        flash("Blacklisted By Admin Can not Book Trek ","error")
         return redirect("/user/dashboard")
     new_booking=Booking(user_id=this_user.id,trek_id=trek_id)
     db.session.add(new_booking)
@@ -35,6 +42,8 @@ def book_trek(trek_id):
 
 @app.route("/user/bookings")
 def my_bookings():
+    if("user_id" not in session):
+        return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
     my_bookings=Booking.query.filter_by(user_id=session["user_id"]).all()
     return render_template("user/my_bookings.html",this_user=this_user,my_bookings=my_bookings)
@@ -42,6 +51,8 @@ def my_bookings():
 
 @app.route("/user/history")
 def history():
+    if("user_id" not in session):
+        return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
     completed_treks=Booking.query.join(Trek).filter(Trek.status=="completed").all()
     return render_template("user/history.html",this_user=this_user,completed_treks=completed_treks)
@@ -49,15 +60,17 @@ def history():
 
 @app.route("/user/treks")
 def avl_treks():
+    if("user_id" not in session):
+        return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
     avl_treks=Trek.query.filter_by(status="open").all()
     return render_template("user/my_treks.html",this_user=this_user,avl_treks=avl_treks)
 
 
-from sqlalchemy import or_
-
 @app.route("/user/search")
 def user_search():
+    if("user_id" not in session):
+        return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
     query = request.args.get("q", "").strip()
 
@@ -84,6 +97,8 @@ def user_search():
 
 @app.route("/trek/<int:trek_id>")
 def trek_details(trek_id):
+    if("user_id" not in session):
+        return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
     trek=Trek.query.filter_by(id=trek_id).first()
     return render_template("user/trek_details.html",this_user=this_user,trek=trek)
@@ -91,6 +106,8 @@ def trek_details(trek_id):
 
 @app.route("/user/profile",methods=["GET","POST"])
 def profile():
+    if("user_id" not in session):
+        return redirect("/login")
     user=User.query.filter_by(id=session["user_id"]).first()
     this_user=user
     if(request.method=="POST"):
