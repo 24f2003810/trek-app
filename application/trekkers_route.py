@@ -9,7 +9,7 @@ def dashboard():
     if("user_id" not in session):
         return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
-    all_trek=Trek.query.all()
+    all_trek=Trek.query.filter_by(status="open").all()
     my_bookings=Booking.query.filter_by(user_id=session["user_id"]).all()
     return render_template("user/dashboard.html",this_user=this_user,all_trek=all_trek,my_bookings=my_bookings)
 
@@ -54,7 +54,7 @@ def history():
     if("user_id" not in session):
         return redirect("/login")
     this_user=User.query.filter_by(id=session["user_id"]).first()
-    completed_treks=Booking.query.join(Trek).filter(Trek.status=="completed").all()
+    completed_treks=Booking.query.join(Trek).filter(Trek.status=="completed",Booking.user_id==this_user.id).all()
     return render_template("user/history.html",this_user=this_user,completed_treks=completed_treks)
 
 
