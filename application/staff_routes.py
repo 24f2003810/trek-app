@@ -4,10 +4,6 @@ from .models import User,Booking,Trek,Staff
 from .db import db
         
 
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect("/login")
 
 @app.route("/staff/dashboard")
 def staff_dashboard():
